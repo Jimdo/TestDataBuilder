@@ -1,13 +1,16 @@
 <?php
-if (!function_exists('testDataBuilderAutoLoad')) {
-    function testDataBuilderAutoLoad($class)
-    {
-        if (strpos($class, 'TestDataBuilder_') === 0) {
-            $file = str_replace('_', '/', $class) . '.php';
-            if ($file) {
-                require dirname(__FILE__) . '/../src/' . $file;
-            }
-        }
-    }
-    spl_autoload_register('testDataBuilderAutoLoad');
+
+error_reporting(-1);
+
+$autoload = __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($autoload)) {
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL;
+    echo " You need to execute `composer install` before running the tests. " . PHP_EOL;
+    echo " Vendors are required for complete test execution. " . PHP_EOL;
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL . PHP_EOL;
+    exit(1);
 }
+
+$loader = require $autoload;
+$loader->add('TestDataBuilder_', __DIR__);
