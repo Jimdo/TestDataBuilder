@@ -226,7 +226,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callAutoload
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE, $proxyTarget = null)
     {
         $generator = new PHPUnit_Framework_MockObject_Generator();
         $mockObject = $generator->getMock(
