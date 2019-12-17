@@ -1,15 +1,9 @@
 {
-    "name": "schnipseljagd/testdatabuilder",
+    "name": "jimdo/testdatabuilder",
     "description": "Helps you to build your mocks, stubs and test data in a nice oop way.",
     "keywords": ["test","testing","mock","mocking"],
-    "homepage": "https://github.com/schnipseljagd/TestDataBuilder",
+    "homepage": "https://github.com/jimdo/TestDataBuilder",
     "license": "LGPL",
-    "authors": [
-        {
-            "name": "Joscha",
-            "email": "joscha@schnipseljagd.org"
-        }
-    ],
     "require": {
         "phpunit/phpunit": "4.*"
     },
