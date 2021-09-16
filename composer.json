@@ -5,7 +5,8 @@
     "homepage": "https://github.com/jimdo/TestDataBuilder",
     "license": "LGPL",
     "require": {
-        "phpunit/phpunit": "4.*"
+        "php" : "<7.4",
+        "phpunit/phpunit": "<5.4"
     },
     "autoload": {
         "psr-0": { "TestDataBuilder": "src/" }
