@@ -5,7 +5,7 @@
     "homepage": "https://github.com/jimdo/TestDataBuilder",
     "license": "LGPL",
     "require": {
-        "php" : ">7.1,<7.4",
+        "php" : ">7.1",
         "phpunit/phpunit": "<5.4"
     },
     "autoload": {
