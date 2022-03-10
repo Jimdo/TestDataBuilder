@@ -1,6 +1,10 @@
 <?php
 
-class TestDataBuilder_SimpleEqualsConstraint extends PHPUnit_Framework_Constraint
+namespace TestDataBuilder;
+
+use PHPUnit_Framework_Constraint as Constraint;
+
+class SimpleEqualsConstraint extends Constraint
 {
 
     private $expected;

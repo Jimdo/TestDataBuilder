@@ -1,6 +1,8 @@
 <?php
- 
-abstract class TestDataBuilder_CustomBuilder extends TestDataBuilder_Builder
+
+namespace TestDataBuilder;
+
+abstract class CustomBuilder extends Builder
 {
     /**
      * @var array
@@ -10,7 +12,7 @@ abstract class TestDataBuilder_CustomBuilder extends TestDataBuilder_Builder
     /**
      * @param string $field
      * @param mixed $value
-     * @return TestDataBuilder_CustomBuilder
+     * @return CustomBuilder
      */
     public function with($field, $value)
     {

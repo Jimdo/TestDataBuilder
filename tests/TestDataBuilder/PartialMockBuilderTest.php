@@ -1,19 +1,27 @@
 <?php
 
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_MockObject_Generator as Generator;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\PartialMockBuilder;
+use TestDataBuilder\PartialMockBuilderForAbstractClass;
+
 /**
- * @covers TestDataBuilder_PartialMockBuilder
- * @covers TestDataBuilder_PartialMockBuilderForAbstractClass
+ * @covers PartialStubBuilder
+ * @covers PartialMockBuilderForAbstractClass
  */
-class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
+class PartialMockBuilderTest extends TestCase
 {
     /**
-     * @var TestDataBuilder_PartialMockBuilder
+     * @var PartialMockBuilder
      */
     private $builder;
 
     public function setUp()
     {
-        $this->builder = new TestDataBuilder_PartialMockBuilder('TestClassForPartialMockObjectBuilder', $this);
+        $this->builder = new PartialMockBuilder(TestClassForPartialMockObjectBuilder::class, $this);
     }
 
     /**
@@ -110,7 +118,7 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildAMockWithPartiallyMockedMethodsFromAbstractClass()
     {
-        $builder = new TestDataBuilder_PartialMockBuilderForAbstractClass('AbstractTestClassForPartialMockObjectBuilder', $this);
+        $builder = new PartialMockBuilderForAbstractClass(AbstractTestClassForPartialMockObjectBuilder::class, $this);
         $mock = $builder->build();
         $this->assertThat($mock->doSomeThing(), $this->equalTo('a value'));
     }
@@ -130,7 +138,7 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
         $this->builder->expectsNoCall('doSomeThing');
         $this->builder->expectsExactNumberOfCalls(2, 'doSomeThing');
         $this->builder->with('doSomeThing', $this->returnValue('test'));
-        $this->assertThat($this->builder->build(), $this->isInstanceOf('PHPUnit_Framework_MockObject_MockObject'));
+        $this->assertThat($this->builder->build(), $this->isInstanceOf(MockObject::class));
     }
 
     /**
@@ -141,11 +149,11 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callOriginalConstructor
      * @param bool $callOriginalClone
      * @param bool $callAutoload
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE, $proxyTarget = null)
     {
-        $generator = new PHPUnit_Framework_MockObject_Generator();
+        $generator = new Generator();
         $mockObject = $generator->getMock(
           $originalClassName,
           $methods,
@@ -161,7 +169,7 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $mock
+     * @param MockObject $mock
      * @param string $expectedMessage
      */
     private function assertThatMockRaisesError($mock, $expectedMessage)
@@ -169,7 +177,7 @@ class TestDataBuilder_PartialMockBuilderTest extends PHPUnit_Framework_TestCase
         try {
             $mock->__phpunit_verify();
             $this->fail('where is my error?');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->assertThat($e->getMessage(), $this->equalTo($expectedMessage));
         }
     }

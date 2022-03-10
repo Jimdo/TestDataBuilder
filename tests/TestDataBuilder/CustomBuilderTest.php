@@ -1,9 +1,14 @@
 <?php
 
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\CustomBuilder;
+
 /**
- * @covers TestDataBuilder_CustomBuilder
+ * @covers CustomBuilder
  */
-class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
+class CustomBuilderTest extends TestCase
 {
     /**
      * @test
@@ -36,7 +41,7 @@ class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return TestDataBuilder_CustomBuilder
+     * @return CustomBuilder
      */
     private function createTestDataBuilder()
     {
@@ -45,7 +50,7 @@ class TestDataBuilder_CustomBuilderTest extends PHPUnit_Framework_TestCase
     }
 }
 
-class TestCustomBuilder extends TestDataBuilder_CustomBuilder
+class TestCustomBuilder extends CustomBuilder
 {
     public function build()
     {

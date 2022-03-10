@@ -1,8 +1,11 @@
 <?php
+
+namespace TestDataBuilder;
+
 /**
  * easy way to build your objects
  */
-class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
+class ObjectBuilder extends Builder
 {
     /**
      * @var string
@@ -39,7 +42,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
 
     /**
      * @param string $factoryMethod
-     * @return TestDataBuilder_ObjectBuilder
+     * @return ObjectBuilder
      */
     public function useFactoryMethod($factoryMethod)
     {
@@ -49,7 +52,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
 
     /**
      * @param array $constructorArgs
-     * @return TestDataBuilder_ObjectBuilder
+     * @return ObjectBuilder
      */
     public function with(array $constructorArgs)
     {
@@ -60,7 +63,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     /**
      * @param integer $index
      * @param mixed $constructorArg
-     * @return TestDataBuilder_ObjectBuilder
+     * @return ObjectBuilder
      */
     public function withArgument($index, $constructorArg)
     {
@@ -70,7 +73,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
 
     /**
      * @param string $method
-     * @return TestDataBuilder_ObjectBuilder
+     * @return ObjectBuilder
      */
     public function call($method)
     {
@@ -83,7 +86,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     /**
      * @param string $property
      * @param mixed $value
-     * @return TestDataBuilder_ObjectBuilder
+     * @return ObjectBuilder
      */
     public function set($property, $value)
     {
@@ -119,7 +122,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     private function setProperties($object)
     {
         foreach ($this->propertiesToSet as $property => $value) {
-            $propertyReflection = new ReflectionProperty($this->class, $property);
+            $propertyReflection = new \ReflectionProperty($this->class, $property);
             $propertyReflection->setValue($object, $this->buildIfValueIsABuilder($value));
         }
     }
@@ -130,7 +133,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
     private function callMethods($object)
     {
         foreach ($this->methodsToCall as $method => $args) {
-            $methodReflection = new ReflectionMethod($this->class, $method);
+            $methodReflection = new \ReflectionMethod($this->class, $method);
             $methodReflection->invokeArgs($object, $this->buildIfValuesAreBuilder($args));
         }
     }
@@ -140,7 +143,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
      */
     private function buildObjectFromConstructor()
     {
-        $classReflection = new ReflectionClass($this->class);
+        $classReflection = new \ReflectionClass($this->class);
         if (!$classReflection->getConstructor()) {
             $object = new $this->class;
             return $object;
@@ -155,7 +158,7 @@ class TestDataBuilder_ObjectBuilder extends TestDataBuilder_Builder
      */
     private function buildObjectFromFactoryMethod()
     {
-        $methodReflection = new ReflectionMethod($this->class, $this->factoryMethod);
+        $methodReflection = new \ReflectionMethod($this->class, $this->factoryMethod);
         return $methodReflection->invokeArgs(null, $this->builtConstructorArgs());
     }
 

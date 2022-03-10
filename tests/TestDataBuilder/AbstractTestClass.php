@@ -1,6 +1,8 @@
 <?php
+
+namespace Test\TestDataBuilder;
  
-abstract class TestDataBuilder_AbstractTestClass
+abstract class AbstractTestClass
 {
     public function __construct($requiredParameter)
     {

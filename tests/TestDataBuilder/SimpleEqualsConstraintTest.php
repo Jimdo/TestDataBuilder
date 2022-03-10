@@ -1,6 +1,12 @@
 <?php
 
-class TestDataBuilder_SimpleEqualsConstraintTest extends PHPUnit_Framework_TestCase
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_Constraint as Constraint;
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\SimpleEqualsConstraint;
+
+class SimpleEqualsConstraintTest extends TestCase
 {
 
     /**
@@ -8,9 +14,9 @@ class TestDataBuilder_SimpleEqualsConstraintTest extends PHPUnit_Framework_TestC
      */
     public function itShouldActAsAPHPUnitConstraint()
     {
-        $constraint = new TestDataBuilder_SimpleEqualsConstraint('something');
+        $constraint = new SimpleEqualsConstraint('something');
 
-        $this->assertInstanceOf('PHPUnit_Framework_Constraint', $constraint);
+        $this->assertInstanceOf(Constraint::class, $constraint);
     }
 
     /**
@@ -20,7 +26,7 @@ class TestDataBuilder_SimpleEqualsConstraintTest extends PHPUnit_Framework_TestC
     {
         $theString = 'the string';
 
-        $constraint = new TestDataBuilder_SimpleEqualsConstraint($theString);
+        $constraint = new SimpleEqualsConstraint($theString);
 
         $this->assertThat(
             $constraint->evaluate($theString, '', true),
@@ -33,7 +39,7 @@ class TestDataBuilder_SimpleEqualsConstraintTest extends PHPUnit_Framework_TestC
      */
     public function itShouldEvaluateToFalseIfTheEvaluatedStringIsNotTheSameAsTheExpected()
     {
-        $constraint = new TestDataBuilder_SimpleEqualsConstraint('a string');
+        $constraint = new SimpleEqualsConstraint('a string');
 
         $this->assertThat(
             $constraint->evaluate('another string', '', true),

@@ -12,5 +12,7 @@ if (!file_exists($autoload)) {
     exit(1);
 }
 
+/** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require $autoload;
-$loader->add('TestDataBuilder_', __DIR__);
+$loader->addPsr4('Test\\TestDataBuilder\\', __DIR__ . '/TestDataBuilder');
+#$loader->add('Test\\TestDataBuilder\\', __DIR__);

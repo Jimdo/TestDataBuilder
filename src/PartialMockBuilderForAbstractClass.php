@@ -1,6 +1,8 @@
 <?php
 
-class TestDataBuilder_PartialMockBuilderForAbstractClass extends TestDataBuilder_PartialMockBuilder
+namespace TestDataBuilder;
+
+class PartialMockBuilderForAbstractClass extends PartialMockBuilder
 {
     protected function createMock()
     {

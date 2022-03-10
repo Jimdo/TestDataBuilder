@@ -1,6 +1,12 @@
 <?php
 
-class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
+namespace TestDataBuilder;
+
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_MockObject_Stub as Stub;
+use PHPUnit_Framework_TestCase as TestCase;
+
+class StubBuilder extends CustomBuilder
 {
     /**
      * @var string
@@ -8,15 +14,15 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     protected $className;
 
     /**
-     * @var PHPUnit_Framework_TestCase
+     * @var TestCase
      */
     protected $testCase;
 
     /**
      * @param string $className
-     * @param PHPUnit_Framework_TestCase $testCase
+     * @param TestCase $testCase
      */
-    public function __construct($className, PHPUnit_Framework_TestCase $testCase)
+    public function __construct($className, TestCase $testCase)
     {
         $this->className = $className;
         $this->testCase = $testCase;
@@ -25,7 +31,7 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     /**
      * @param string $method
      * @param mixed $will
-     * @return TestDataBuilder_StubBuilder
+     * @return StubBuilder
      */
     public function with($method, $will)
     {
@@ -33,7 +39,7 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function build()
     {
@@ -43,7 +49,7 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function createStub()
     {
@@ -51,14 +57,14 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $stub
+     * @param MockObject $stub
      */
     protected function loadMethodStubs($stub)
     {
         foreach ($this->fields as $field => $will) {
             $will = $this->buildStub($will);
 
-            $methodConstraint = new TestDataBuilder_SimpleEqualsConstraint($field);
+            $methodConstraint = new SimpleEqualsConstraint($field);
 
             $stub->expects($this->testCase->any())->method($methodConstraint)->will($will);
         }
@@ -66,7 +72,7 @@ class TestDataBuilder_StubBuilder extends TestDataBuilder_CustomBuilder
 
     protected function buildStub($will)
     {
-        if (!is_object($will) || !($will instanceof PHPUnit_Framework_MockObject_Stub)) {
+        if (!is_object($will) || !($will instanceof Stub)) {
             $will = $this->testCase->returnValue($this->buildIfValueIsABuilder($will));
         }
         return $will;

@@ -1,18 +1,26 @@
 <?php
 
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_MockObject_Generator as Generator;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\ArrayBuilder;
+use TestDataBuilder\MockBuilder;
+
 /**
- * @covers TestDataBuilder_MockBuilder
+ * @covers MockBuilder
  */
-class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
+class MockBuilderTest extends TestCase
 {
     /**
-     * @var TestDataBuilder_MockBuilder
+     * @var MockBuilder
      */
     private $builder;
 
     public function setUp()
     {
-        $this->builder = new TestDataBuilder_MockBuilder('TestClassForMockObjectBuilder', $this);
+        $this->builder = new MockBuilder(TestClassForMockObjectBuilder::class, $this);
     }
 
     /**
@@ -49,12 +57,12 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->builder->expectsCall('doSomeThing')
             ->with($this->equalTo(34), $this->isInstanceOf('stdClass'));
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nParameter 1 for invocation TestClassForMockObjectBuilder::doSomeThing(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".\n";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked 1 time(s).\nParameter 1 for invocation Test\\TestDataBuilder\\TestClassForMockObjectBuilder::doSomeThing(34, null) does not match expected value.\nFailed asserting that null is an instance of class \"stdClass\".\n";
         $mock = $this->builder->build();
 
         try {
             $mock->doSomeThing(34, null);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // ignore failing expectation here
         }
         $this->assertThatMockRaisesError(
@@ -73,7 +81,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $mock = $this->builder->build();
         try {
             $mock->doSomeThing();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // ignore failing expectation here
         }
         $this->assertThatMockRaisesError(
@@ -162,11 +170,11 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException RuntimeException
      */
     public function itShouldBuildAMockWithAnotherMethodStub()
     {
-        $this->builder->with('doSomeThing', $this->throwException(new RuntimeException()));
+        $this->expectException(\RuntimeException::class);
+        $this->builder->with('doSomeThing', $this->throwException(new \RuntimeException()));
         $this->builder->expectsCall('doSomeThing');
         $mock = $this->builder->build();
         $mock->doSomeThing();
@@ -213,7 +221,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->builder->expectsNoCall('doSomeThing');
         $this->builder->expectsExactNumberOfCalls(2, 'doSomeThing');
         $this->builder->with('doSomeThing', $this->returnValue('test'));
-        $this->assertThat($this->builder->build(), $this->isInstanceOf('PHPUnit_Framework_MockObject_MockObject'));
+        $this->assertThat($this->builder->build(), $this->isInstanceOf(MockObject::class));
     }
 
     /**
@@ -224,11 +232,11 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
      * @param bool $callOriginalConstructor
      * @param bool $callOriginalClone
      * @param bool $callAutoload
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE, $proxyTarget = null)
     {
-        $generator = new PHPUnit_Framework_MockObject_Generator();
+        $generator = new Generator();
         $mockObject = $generator->getMock(
           $originalClassName,
           $methods,
@@ -245,11 +253,11 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
 
     private function anArray(array $data)
     {
-        return new TestDataBuilder_ArrayBuilder($data);
+        return new ArrayBuilder($data);
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $mock
+     * @param MockObject $mock
      * @param string $expectedMessage
      */
     private function assertThatMockRaisesError($mock, $expectedMessage)
@@ -257,7 +265,7 @@ class TestDataBuilder_MockBuilderTest extends PHPUnit_Framework_TestCase
         try {
             $mock->__phpunit_verify();
             $this->fail('where is my error?');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->assertThat($e->getMessage(), $this->equalTo($expectedMessage));
         }
     }

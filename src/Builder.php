@@ -1,12 +1,15 @@
 <?php
+
+namespace TestDataBuilder;
+
 /**
  * implements the common builder interface
  */
-abstract class TestDataBuilder_Builder
+abstract class Builder
 {
 
     /**
-     * @return TestDataBuilder_Builder
+     * @return Builder
      */
     public function but()
     {
@@ -41,12 +44,12 @@ abstract class TestDataBuilder_Builder
     }
 
     /**
-     * @param TestDataBuilder_Builder|mixed $value
+     * @param Builder|mixed $value
      * @return mixed
      */
     public static function buildIfPossible($value)
     {
-        if ($value instanceof TestDataBuilder_Builder) {
+        if ($value instanceof Builder) {
             return $value->build();
         }
         return $value;

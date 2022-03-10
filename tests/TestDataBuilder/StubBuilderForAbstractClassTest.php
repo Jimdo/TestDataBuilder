@@ -1,43 +1,23 @@
 <?php
-require_once dirname(__FILE__) . '/AbstractTestClass.php';
-require_once dirname(__FILE__) . '/TestClass.php';
+
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\StubBuilderForAbstractClass;
 
 /**
- * @covers TestDataBuilder_StubBuilderForAbstractClass
- * @covers TestDataBuilder_StubBuilder
+ * @covers StubBuilderForAbstractClass
+ * @covers StubBuilder
  */
-class TestDataBuilder_StubBuilderForAbstractClassTest extends PHPUnit_Framework_TestCase
+class StubBuilderForAbstractClassTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function itShouldStubDefinedClass()
-    {
-        $testCase = $this->getMockBuilder('PHPUnit_Framework_TestCase')->disableOriginalConstructor()->getMock();
-        $testCase->expects($this->once())->method('getMockForAbstractClass')->with($this->equalTo('stdClass'));
-
-        $builder = new TestDataBuilder_StubBuilderForAbstractClass('stdClass', $testCase);
-        $builder->build();
-    }
-
-    /**
-     * @test
-     */
-    public function itShouldReturnTheDefinedStub()
-    {
-        $testCase = $this->getMockBuilder('PHPUnit_Framework_TestCase')->disableOriginalConstructor()->getMock();
-        $testCase->expects($this->any())->method('getMockForAbstractClass')->will($this->returnValue(new stdClass()));
-        $builder = new TestDataBuilder_StubBuilderForAbstractClass('stdClass', $testCase);
-
-        $this->assertThat($builder->build(), $this->isInstanceOf('stdClass'));
-    }
 
     /**
      * @test
      */
     public function itShouldStubImplementationForAbstractMethods()
     {
-        $builder = new TestDataBuilder_StubBuilderForAbstractClass('TestDataBuilder_AbstractTestClass', $this);
+        $builder = new StubBuilderForAbstractClass(AbstractTestClass::class, $this);
         $builder->withConstructorArgs(array(true));
         $stub = $builder->build();
         $value = $stub->getTestValue();
@@ -51,7 +31,7 @@ class TestDataBuilder_StubBuilderForAbstractClassTest extends PHPUnit_Framework_
      */
     public function itShouldAddNewImplementationForAbstractMethods()
     {
-        $builder = new TestDataBuilder_StubBuilderForAbstractClass('TestDataBuilder_AbstractTestClass', $this);
+        $builder = new StubBuilderForAbstractClass(AbstractTestClass::class, $this);
         $builder->withConstructorArgs(array(true));
         $builder->with('getTestValue2', 'test return value');
 
