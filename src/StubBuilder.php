@@ -2,9 +2,9 @@
 
 namespace TestDataBuilder;
 
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_MockObject_Stub as Stub;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\TestCase;
 
 class StubBuilder extends CustomBuilder
 {
@@ -53,7 +53,7 @@ class StubBuilder extends CustomBuilder
      */
     protected function createStub()
     {
-        return $this->testCase->getMock($this->className, array(), array(), '', false, false);
+        return $this->testCase->getMockBuilder($this->className)->disableOriginalConstructor()->getMock();
     }
 
     /**

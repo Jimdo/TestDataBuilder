@@ -2,7 +2,7 @@
 
 namespace Test\TestDataBuilder;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use TestDataBuilder\Builder;
 use TestDataBuilder\ObjectBuilder;
 
