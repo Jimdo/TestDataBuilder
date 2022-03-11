@@ -1,6 +1,10 @@
 <?php
+
+namespace TestDataBuilder;
  
-class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBuilder
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+
+class StubBuilderForAbstractClass extends StubBuilder
 {
     /**
      * @var array
@@ -9,7 +13,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBu
 
     /**
      * @param array $arguments
-     * @return TestDataBuilder_StubBuilderForAbstractClass
+     * @return StubBuilderForAbstractClass
      */
     public function withConstructorArgs(array $arguments)
     {
@@ -20,7 +24,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBu
     /**
      * @param integer $index
      * @param mixed $argument
-     * @return TestDataBuilder_StubBuilderForAbstractClass
+     * @return StubBuilderForAbstractClass
      */
     public function withArgument($index, $argument)
     {
@@ -29,7 +33,7 @@ class TestDataBuilder_StubBuilderForAbstractClass extends TestDataBuilder_StubBu
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function createStub()
     {

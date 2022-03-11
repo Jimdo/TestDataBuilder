@@ -1,6 +1,13 @@
 <?php
 
-class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
+namespace TestDataBuilder;
+
+use PHPUnit_Framework_MockObject_Builder_InvocationMocker as InvocationMocker;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\MockBuilder\Expectation;
+
+class MockBuilder extends StubBuilder
 {
     /**
      * @var string
@@ -8,20 +15,20 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     protected $className;
 
     /**
-     * @var PHPUnit_Framework_TestCase
+     * @var TestCase
      */
     protected $testCase;
 
     /**
-     * @var TestDataBuilder_MockBuilder_Expectation[]
+     * @var Expectation[]
      */
     protected $expectations;
 
     /**
      * @param string $className
-     * @param PHPUnit_Framework_TestCase $testCase
+     * @param TestCase $testCase
      */
-    public function __construct($className, PHPUnit_Framework_TestCase $testCase)
+    public function __construct($className, TestCase $testCase)
     {
         $this->className = $className;
         $this->testCase = $testCase;
@@ -29,7 +36,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     }
 
     /**
-     * @return TestDataBuilder_MockBuilder
+     * @return MockBuilder
      */
     public function but()
     {
@@ -39,7 +46,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     /**
      * @param string $method
      * @param mixed $will
-     * @return TestDataBuilder_MockBuilder
+     * @return MockBuilder
      */
     public function with($method, $will)
     {
@@ -74,7 +81,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function build()
     {
@@ -92,9 +99,9 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
     {
         foreach ($this->expectations as $expectation) {
             $invocationMocker = $mock->expects($expectation->getInvocationMatcher());
-            $methodConstraint = new TestDataBuilder_SimpleEqualsConstraint($expectation->getMethod());
+            $methodConstraint = new SimpleEqualsConstraint($expectation->getMethod());
             $invocationMocker = $invocationMocker->method($methodConstraint);
-            $invocationMockerReflection = new ReflectionMethod('PHPUnit_Framework_MockObject_Builder_InvocationMocker', 'with');
+            $invocationMockerReflection = new \ReflectionMethod(InvocationMocker::class, 'with');
             $invocationMockerReflection->invokeArgs(
                 $invocationMocker,
                 $this->buildIfValuesAreBuilder($expectation->getArguments())
@@ -107,7 +114,7 @@ class TestDataBuilder_MockBuilder extends TestDataBuilder_StubBuilder
 
     private function expects($method, $invocationMatcher)
     {
-        $expectation = new TestDataBuilder_MockBuilder_Expectation(
+        $expectation = new Expectation(
             $method,
             $invocationMatcher
         );

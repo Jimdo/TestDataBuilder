@@ -1,43 +1,24 @@
 <?php
-require_once dirname(__FILE__) . '/AbstractTestClass.php';
-require_once dirname(__FILE__) . '/TestClass.php';
+
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\Builder;
+use TestDataBuilder\PartialStubBuilder;
+use TestDataBuilder\StubBuilder;
 
 /**
- * @covers TestDataBuilder_StubBuilder
- * @covers TestDataBuilder_StubBuilder
+ * @covers StubBuilder
+ * @covers StubBuilder
  */
-class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
+class StubBuilderTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function itShouldStubDefinedClass()
-    {
-        $testCase = $this->getMockBuilder('PHPUnit_Framework_TestCase')->disableOriginalConstructor()->getMock();
-        $testCase->expects($this->once())->method('getMock')->with($this->equalTo('stdClass'));
-        
-        $builder = new TestDataBuilder_StubBuilder('stdClass', $testCase);
-        $builder->build();
-    }
-
-    /**
-     * @test
-     */
-    public function itShouldReturnTheDefinedStub()
-    {
-        $testCase = $this->getMockBuilder('PHPUnit_Framework_TestCase')->disableOriginalConstructor()->getMock();
-        $testCase->expects($this->any())->method('getMock')->will($this->returnValue(new stdClass()));
-        $builder = new TestDataBuilder_StubBuilder('stdClass', $testCase);
-
-        $this->assertThat($builder->build(), $this->isInstanceOf('stdClass'));
-    }
-
     /**
      * @test
      */
     public function itShouldStubImplementationForDefinedMethodsOnly()
     {
-        $builder = new TestDataBuilder_PartialStubBuilder('TestDataBuilder_TestClass', $this);
+        $builder = new PartialStubBuilder(TestClass::class, $this);
         $builder->with('getTestValue2', 'test return value');
         $stub = $builder->build();
 
@@ -51,7 +32,7 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldStubImplementationForAllMethodsAsDefault()
     {
-        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
+        $builder = new StubBuilder(TestClass::class, $this);
         $stub = $builder->build();
         $value = $stub->getTestValue();
         $value2 = $stub->getTestValue2();
@@ -64,7 +45,7 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldAddReturnValueImplementationForDefinedMethods()
     {
-        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
+        $builder = new StubBuilder(TestClass::class, $this);
         $builder->with('getTestValue', 'test return value');
 
         $this->assertThat($builder->build()->getTestValue(), $this->equalTo('test return value'));
@@ -72,12 +53,12 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException RuntimeException
      */
     public function itShouldAddThrowExceptionImplementationForDefinedMethods()
     {
-        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
-        $builder->with('getTestValue', $this->throwException(new RuntimeException()));
+        $this->expectException(\RuntimeException::class);
+        $builder = new StubBuilder(TestClass::class, $this);
+        $builder->with('getTestValue', $this->throwException(new \RuntimeException()));
 
         $builder->build()->getTestValue();
     }
@@ -87,10 +68,10 @@ class TestDataBuilder_StubBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildOtherBuilders()
     {
-        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder = $this->getMockBuilder(Builder::class)->getMockForAbstractClass();
         $otherBuilder->expects($this->once())->method('build');
 
-        $builder = new TestDataBuilder_StubBuilder('TestDataBuilder_TestClass', $this);
+        $builder = new StubBuilder(TestClass::class, $this);
         $builder->with('getTestValue', $otherBuilder);
         $builder->build();
     }

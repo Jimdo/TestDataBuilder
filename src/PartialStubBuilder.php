@@ -1,9 +1,13 @@
 <?php
 
-class TestDataBuilder_PartialStubBuilder extends TestDataBuilder_StubBuilderForAbstractClass
+namespace TestDataBuilder;
+
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
+
+class PartialStubBuilder extends StubBuilderForAbstractClass
 {
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function createStub()
     {

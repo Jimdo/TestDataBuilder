@@ -1,18 +1,24 @@
 <?php
 
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\Builder;
+use TestDataBuilder\ObjectBuilder;
+
 /**
- * @covers TestDataBuilder_ObjectBuilder
+ * @covers ObjectBuilder
  */
-class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
+class ObjectBuilderTest extends TestCase
 {
     /**
      * @test
      */
     public function itShouldBuildObject()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('stdClass');
+        $objectBuilder = new ObjectBuilder(\stdClass::class);
 
-        $this->assertThat($objectBuilder->build(), $this->isInstanceOf('stdClass'));
+        $this->assertThat($objectBuilder->build(), $this->isInstanceOf(\stdClass::class));
     }
 
     /**
@@ -20,7 +26,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildObjectWithConstructorArguments()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
 
         $this->assertThat($objectBuilder->build()->getAnyParameter(), $this->equalTo('test value'));
@@ -31,7 +37,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildObjectWithMultipleConstructorArguments()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value', 'test value 2'));
 
         $this->assertThat($objectBuilder->build()->getAnySecondParameter(), $this->equalTo('test value 2'));
@@ -42,7 +48,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldCallMethodsAfterObjectBuild()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->call('overrideParameters', 'overridden test value');
 
@@ -54,7 +60,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldCallMethodsWithMultipleArgumentsAfterObjectBuild()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->call('overrideParameters', 'overridden test value', 'overridden test value 2');
 
@@ -66,7 +72,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldCallMethodsWithoutArgumentsAfterObjectBuild()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->call('overrideParameters');
 
@@ -78,7 +84,7 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldSetPropertiesAfterObjectBuild()
     {
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->set('anyProperty', 'test value');
         $this->assertThat($objectBuilder->build()->anyProperty, $this->equalTo('test value'));
@@ -89,10 +95,10 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildOtherBuilderBeforeObjectConstruction()
     {
-        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder = $this->getMockBuilder(Builder::class)->getMockForAbstractClass();
         $otherBuilder->expects($this->once())->method('build');
 
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array($otherBuilder));
         $objectBuilder->build();
     }
@@ -102,10 +108,10 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildOtherBuilderBeforeCallingMethods()
     {
-        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder = $this->getMockBuilder(Builder::class)->getMockForAbstractClass();
         $otherBuilder->expects($this->once())->method('build');
 
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->call('overrideParameters', $otherBuilder);
         $objectBuilder->build();
@@ -116,10 +122,10 @@ class TestDataBuilder_ObjectBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildOtherBuilderBeforeSettingProperties()
     {
-        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder = $this->getMockBuilder(Builder::class)->getMockForAbstractClass();
         $otherBuilder->expects($this->once())->method('build');
 
-        $objectBuilder = new TestDataBuilder_ObjectBuilder('test_Object');
+        $objectBuilder = new ObjectBuilder(test_Object::class);
         $objectBuilder->with(array('test value'));
         $objectBuilder->set('anyProperty', $otherBuilder);
         $objectBuilder->build();

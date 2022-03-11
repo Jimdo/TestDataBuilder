@@ -1,6 +1,8 @@
 <?php
 
-class TestDataBuilder_PartialMockBuilder extends TestDataBuilder_MockBuilder
+namespace TestDataBuilder;
+
+class PartialMockBuilder extends MockBuilder
 {
     protected $constructorArgs = array();
     private $disabledConstructor = false;

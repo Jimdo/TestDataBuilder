@@ -1,6 +1,8 @@
 <?php
 
-class TestDataBuilder_MockBuilder_Expectation
+namespace TestDataBuilder\MockBuilder;
+
+class Expectation
 {
     private $method;
     private $invocationMatcher;

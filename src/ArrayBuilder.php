@@ -1,6 +1,8 @@
 <?php
+
+namespace TestDataBuilder;
  
-class TestDataBuilder_ArrayBuilder extends TestDataBuilder_CustomBuilder implements ArrayAccess
+class ArrayBuilder extends CustomBuilder implements \ArrayAccess
 {
     /**
      * @param array $fields
@@ -55,7 +57,7 @@ class TestDataBuilder_ArrayBuilder extends TestDataBuilder_CustomBuilder impleme
 
     /**
      * @param string $field
-     * @return TestDataBuilder_ArrayBuilder
+     * @return ArrayBuilder
      */
     public function without($field)
     {

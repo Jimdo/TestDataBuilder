@@ -1,16 +1,22 @@
 <?php
 
+namespace Test\TestDataBuilder;
+
+use PHPUnit_Framework_TestCase as TestCase;
+use TestDataBuilder\ArrayBuilder;
+use TestDataBuilder\Builder;
+
 /**
- * @covers TestDataBuilder_ArrayBuilder
+ * @covers ArrayBuilder
  */
-class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
+class ArrayBuilderTest extends TestCase
 {
     /**
      * @test
      */
     public function itShouldReturnDefinedFields()
     {
-        $array = new TestDataBuilder_ArrayBuilder();
+        $array = new ArrayBuilder();
         $array->with('test', 'test value');
         $array['test2'] = 'test value 2';
 
@@ -24,7 +30,7 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldReturnIfOffsetExists()
     {
-        $array = new TestDataBuilder_ArrayBuilder();
+        $array = new ArrayBuilder();
         $array['test'] = 'test value';
 
         $this->assertThat(isset($array['test']), $this->isTrue());
@@ -35,7 +41,7 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldReturnIfOffsetNotExists()
     {
-        $array = new TestDataBuilder_ArrayBuilder();
+        $array = new ArrayBuilder();
 
         $this->assertThat(isset($array['test']), $this->isFalse());
     }
@@ -45,7 +51,7 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldReturnDefinedOffset()
     {
-        $array = new TestDataBuilder_ArrayBuilder();
+        $array = new ArrayBuilder();
         $array['anyOffset'] = 'any value';
 
         $this->assertThat($array['anyOffset'], $this->equalTo('any value'));
@@ -56,10 +62,10 @@ class TestDataBuilder_ArrayBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function itShouldBuildOtherBuilders()
     {
-        $otherBuilder = $this->getMockBuilder('TestDataBuilder_Builder')->getMockForAbstractClass();
+        $otherBuilder = $this->getMockBuilder(Builder::class)->getMockForAbstractClass();
         $otherBuilder->expects($this->once())->method('build');
 
-        $array = new TestDataBuilder_ArrayBuilder();
+        $array = new ArrayBuilder();
         $array['anyOffset'] = $otherBuilder;
         $array->build();
     }

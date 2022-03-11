@@ -1,6 +1,8 @@
 <?php
 
-class TestDataBuilder_TestClass extends TestDataBuilder_AbstractTestClass
+namespace Test\TestDataBuilder;
+
+class TestClass extends AbstractTestClass
 {
     /**
      * @return string
