@@ -2,8 +2,20 @@
 
 namespace Test\TestDataBuilder;
 
-class TestClass extends AbstractTestClass
+class TestClass
 {
+    public function __construct($requiredParameter)
+    {
+    }
+
+    /**
+     * @return string
+     */
+    public function getTestValue()
+    {
+        return 'blah blah';
+    }
+
     /**
      * @return string
      */

@@ -2,8 +2,8 @@
 
 namespace Test\TestDataBuilder;
 
-use PHPUnit_Framework_Constraint as Constraint;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\TestCase;
 use TestDataBuilder\SimpleEqualsConstraint;
 
 class SimpleEqualsConstraintTest extends TestCase

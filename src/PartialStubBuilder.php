@@ -2,22 +2,49 @@
 
 namespace TestDataBuilder;
 
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class PartialStubBuilder extends StubBuilderForAbstractClass
+class PartialStubBuilder extends StubBuilder
 {
+    /**
+     * @var array
+     */
+    protected $arguments = [];
+    /**
+     * @param array $arguments
+     * @return PartialStubBuilder
+     */
+    public function withConstructorArgs(array $arguments)
+    {
+        $this->arguments = $arguments;
+        return $this;
+    }
+
+    /**
+     * @param integer $index
+     * @param mixed $argument
+     * @return PartialStubBuilder
+     */
+    public function withArgument($index, $argument)
+    {
+        $this->arguments[(int) $index] = $argument;
+        return $this;
+    }
+
     /**
      * @return MockObject
      */
     protected function createStub()
     {
+        $a = $this->testCase
+            ->getMockBuilder($this->className)
+            ->setConstructorArgs($this->arguments)
+            ->setMethods(array_keys($this->fields));
+
         if (empty($this->arguments)) {
-            $callOriginalConstructor = false;
-        } else {
-            $callOriginalConstructor = true;
+            $a->disableOriginalConstructor();
         }
-        return $this->testCase->getMock(
-            $this->className, array_keys($this->fields), $this->arguments, '', $callOriginalConstructor
-        );
+
+        return $a->getMock();
     }
 }

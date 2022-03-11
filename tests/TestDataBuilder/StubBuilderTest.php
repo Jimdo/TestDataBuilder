@@ -2,7 +2,7 @@
 
 namespace Test\TestDataBuilder;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use TestDataBuilder\Builder;
 use TestDataBuilder\PartialStubBuilder;
 use TestDataBuilder\StubBuilder;
@@ -22,9 +22,8 @@ class StubBuilderTest extends TestCase
         $builder->with('getTestValue2', 'test return value');
         $stub = $builder->build();
 
-        $this->assertThat(
-            $stub->getTestValue() === 'blah blah' && $stub->getTestValue2() === 'test return value', $this->isTrue()
-        );
+        $this->assertEquals('blah blah', $stub->getTestValue());
+        $this->assertEquals('test return value', $stub->getTestValue2());
     }
 
     /**
@@ -37,7 +36,8 @@ class StubBuilderTest extends TestCase
         $value = $stub->getTestValue();
         $value2 = $stub->getTestValue2();
 
-        $this->assertThat($value === null && $value2 === null, $this->isTrue());
+        $this->assertNull($value);
+        $this->assertNull($value2);
     }
 
     /**
@@ -48,7 +48,7 @@ class StubBuilderTest extends TestCase
         $builder = new StubBuilder(TestClass::class, $this);
         $builder->with('getTestValue', 'test return value');
 
-        $this->assertThat($builder->build()->getTestValue(), $this->equalTo('test return value'));
+        $this->assertEquals('test return value', $builder->build()->getTestValue());
     }
 
     /**

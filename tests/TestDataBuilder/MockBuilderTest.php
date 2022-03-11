@@ -2,9 +2,9 @@
 
 namespace Test\TestDataBuilder;
 
-use PHPUnit_Framework_MockObject_Generator as Generator;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\MockObject\Generator;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use TestDataBuilder\ArrayBuilder;
 use TestDataBuilder\MockBuilder;
 
@@ -108,7 +108,7 @@ class MockBuilderTest extends TestCase
      */
     public function itShouldBuildAMockWhichExpectsAtLeastOneCall()
     {
-        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at least once.\nExpected invocation at least once but it never occured.\n";
+        $expectedMessage = "Expectation failed for method name equals (==) 'doSomeThing' when invoked at least once.\nExpected invocation at least once but it never occurred.\n";
         $this->builder->expectsAtLeastOneCall('doSomeThing');
         $this->assertThatMockRaisesError(
             $this->builder->build(), 
