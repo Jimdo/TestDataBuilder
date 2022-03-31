@@ -2,7 +2,7 @@
 
 namespace TestDataBuilder;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 class PartialStubBuilder extends StubBuilder
 {
