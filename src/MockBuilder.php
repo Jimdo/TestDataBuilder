@@ -2,8 +2,8 @@
 
 namespace TestDataBuilder;
 
-use PHPUnit_Framework_MockObject_Builder_InvocationMocker as InvocationMocker;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use TestDataBuilder\MockBuilder\Expectation;
 
