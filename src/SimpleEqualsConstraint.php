@@ -2,7 +2,7 @@
 
 namespace TestDataBuilder;
 
-use PHPUnit_Framework_Constraint as Constraint;
+use PHPUnit\Framework\Constraint\Constraint;
 
 class SimpleEqualsConstraint extends Constraint
 {
