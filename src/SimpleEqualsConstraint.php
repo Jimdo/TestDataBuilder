@@ -15,7 +15,7 @@ class SimpleEqualsConstraint extends Constraint
         parent::__construct();
     }
 
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return $this->expected == $other;
     }
@@ -25,7 +25,7 @@ class SimpleEqualsConstraint extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return sprintf(
             'equals (==) %s',
