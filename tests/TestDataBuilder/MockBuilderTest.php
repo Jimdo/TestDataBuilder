@@ -18,7 +18,7 @@ class MockBuilderTest extends TestCase
      */
     private $builder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->builder = new MockBuilder(TestClassForMockObjectBuilder::class, $this);
     }

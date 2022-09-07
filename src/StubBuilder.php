@@ -3,7 +3,7 @@
 namespace TestDataBuilder;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestCase;
 
 class StubBuilder extends CustomBuilder
@@ -29,16 +29,6 @@ class StubBuilder extends CustomBuilder
     }
 
     /**
-     * @param string $method
-     * @param mixed $will
-     * @return StubBuilder
-     */
-    public function with($method, $will)
-    {
-        return parent::with($method, $will);
-    }
-
-    /**
      * @return MockObject
      */
     public function build()
@@ -48,18 +38,12 @@ class StubBuilder extends CustomBuilder
         return $stub;
     }
 
-    /**
-     * @return MockObject
-     */
-    protected function createStub()
+    protected function createStub(): MockObject
     {
         return $this->testCase->getMockBuilder($this->className)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * @param MockObject $stub
-     */
-    protected function loadMethodStubs($stub)
+    protected function loadMethodStubs(MockObject $stub)
     {
         foreach ($this->fields as $field => $will) {
             $will = $this->buildStub($will);
@@ -70,7 +54,7 @@ class StubBuilder extends CustomBuilder
         }
     }
 
-    protected function buildStub($will)
+    protected function buildStub($will): Stub
     {
         if (!is_object($will) || !($will instanceof Stub)) {
             $will = $this->testCase->returnValue($this->buildIfValueIsABuilder($will));
