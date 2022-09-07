@@ -31,10 +31,7 @@ class PartialStubBuilder extends StubBuilder
         return $this;
     }
 
-    /**
-     * @return MockObject
-     */
-    protected function createStub()
+    protected function createStub(): MockObject
     {
         $a = $this->testCase
             ->getMockBuilder($this->className)
