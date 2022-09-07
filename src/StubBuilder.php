@@ -3,7 +3,7 @@
 namespace TestDataBuilder;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestCase;
 
 class StubBuilder extends CustomBuilder
