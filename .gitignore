@@ -2,3 +2,4 @@ phpunit.xml
 composer.phar
 /vendor/
 .idea
+composer.lock
