@@ -5,8 +5,8 @@
     "homepage": "https://github.com/jimdo/TestDataBuilder",
     "license": "LGPL",
     "require": {
-        "php" : "7.3 - 8.0",
-        "phpunit/phpunit": "8.*"
+        "php": "^7.3 || ^8.0",
+        "phpunit/phpunit": "^8.5 || ^9.6"
     },
     "autoload": {
         "exclude-from-classmap": ["/tests/"],
